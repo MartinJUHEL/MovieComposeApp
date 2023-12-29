@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -44,11 +45,13 @@ fun MovieCard(
             Column {
                 Text(
                     title, modifier = Modifier
-                        .padding(start = 5.dp, top = 10.dp, bottom = 10.dp)
+                        .padding(start = 5.dp, top = 10.dp, bottom = 10.dp),
+                    style = MaterialTheme.typography.titleMedium
                 )
                 Text(
                     categories, modifier = Modifier
-                        .padding(start = 5.dp)
+                        .padding(start = 5.dp),
+                    style = MaterialTheme.typography.titleSmall
                 )
             }
         }

@@ -1,20 +1,23 @@
 package com.example.moviecomposeapp.ui.detail
 
+import android.content.Context
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -27,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -35,10 +39,10 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.moviecomposeapp.R
 import com.example.moviecomposeapp.domain.model.Movie
+import com.example.moviecomposeapp.domain.usecase.DisplayCategoriesUseCase
 import com.example.moviecomposeapp.ui.component.ErrorView
 import com.example.moviecomposeapp.ui.component.shimmerBrush
 import com.example.moviecomposeapp.ui.detail.component.DetailsTopBar
-import com.example.moviecomposeapp.ui.home.component.MoviePoster
 
 @Composable
 fun MovieDetailsScreen(navController: NavController) {
@@ -50,7 +54,7 @@ fun MovieDetailsScreen(navController: NavController) {
         when (movieDetailwViewState) {
             is MovieDetailViewState.Data -> Details(
                 (movieDetailwViewState as MovieDetailViewState.Data).movie,
-                navController
+                navController, viewModel
             )
 
             MovieDetailViewState.Error -> ErrorScreen(viewModel)
@@ -62,8 +66,9 @@ fun MovieDetailsScreen(navController: NavController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun Details(movie: Movie, navController: NavController) {
+private fun Details(movie: Movie, navController: NavController, viewModel: MovieDetailsViewModel) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val context = LocalContext.current
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -85,16 +90,63 @@ private fun Details(movie: Movie, navController: NavController) {
                 Poster(movie.posterPath)
             }
             item {
-                Text(
-                    movie.title,
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(10.dp)
-                )
+                Row {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            movie.title,
+                            style = MaterialTheme.typography.titleLarge,
+                            modifier = Modifier.padding(10.dp)
+                        )
+                        Text(
+                            DisplayCategoriesUseCase().execute(movie.genres),
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.padding(10.dp)
+                        )
+                    }
+                    Box(
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .align(alignment = Alignment.Bottom)
+                    ) {
+                        Text(
+                            "${movie.voteAverage.toString()} / 10",
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
                 Divider()
                 Text(
                     movie.overview,
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(10.dp)
+                )
+                HomePageButton(url = movie.homePage, viewModel, context)
+                Box(modifier = Modifier.height(20.dp))
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun HomePageButton(url: String?, viewModel: MovieDetailsViewModel, context: Context) {
+    if (!url.isNullOrEmpty()) {
+        Surface(onClick = {
+            viewModel.openHomePage(url, context)
+        }, modifier = Modifier.padding(10.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+
+                Icon(
+                    painterResource(id = R.drawable.baseline_language_24),
+                    tint = MaterialTheme.colorScheme.primary,
+                    contentDescription = stringResource(id = R.string.back_description),
+                )
+
+                Text(
+                    url,
+                    modifier = Modifier.padding(start = 5.dp),
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
         }

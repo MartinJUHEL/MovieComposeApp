@@ -1,5 +1,10 @@
 package com.example.moviecomposeapp.ui.home
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,5 +35,4 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
-
 }

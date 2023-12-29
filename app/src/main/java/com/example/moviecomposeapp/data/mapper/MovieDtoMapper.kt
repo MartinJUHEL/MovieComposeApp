@@ -25,9 +25,10 @@ class MovieDtoMapper @Inject constructor(
         adult = adult,
         backdropPath = backdrop_path,
         popularity = popularity,
-        genres = getGenreFromIdUseCase.execute(genre_ids),
+        genres = genres ?: getGenreFromIdUseCase.execute(genre_ids),
         originalLanguage = original_language,
         originalTitle = original_title,
-        releaseDate = release_date
+        releaseDate = release_date,
+        homePage = homepage
     )
 }

@@ -1,5 +1,9 @@
 package com.example.moviecomposeapp.ui.detail
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -33,6 +37,12 @@ class MovieDetailsViewModel @Inject constructor(
                 _movieDetailsviewStateLiveData.postValue(it)
             }
         }
+    }
+
+    fun openHomePage(url: String, context: Context) {
+        val openURL = Intent(Intent.ACTION_VIEW)
+        openURL.data = Uri.parse(url)
+        ContextCompat.startActivity(context, openURL, null)
     }
 
 }
