@@ -74,6 +74,8 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    implementation ("androidx.navigation:navigation-compose:2.7.6")
+
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0-rc02")
     implementation("androidx.compose.runtime:runtime-livedata:1.5.4")
 
@@ -82,7 +84,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     //Dependcy Injection
     implementation("com.google.dagger:hilt-android:2.48")
@@ -91,4 +93,7 @@ dependencies {
     implementation("androidx.hilt:hilt-work:1.1.0")
     implementation("androidx.work:work-runtime-ktx:2.9.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
+    //Coil
+    implementation("io.coil-kt:coil-compose:2.5.0")
 }

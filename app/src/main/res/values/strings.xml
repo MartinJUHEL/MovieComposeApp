@@ -2,4 +2,10 @@
     <string name="app_name">Movie Compose App</string>
     <string name="profile_picture">Contact profile picture</string>
     <string name="title_activity_home">HomeActivity</string>
+    <string name="movie_poster">Movie Poster</string>
+    <string name="popular_movies_title">Popular Movies</string>
+    <string name="trending_movies_title">This week\'s trending</string>
+    <string name="error_text">Something went wrong</string>
+    <string name="refresh">Refresh</string>
+    <string name="back_description">Back to previous screen</string>
 </resources>

@@ -1,7 +1,7 @@
 package com.example.moviecomposeapp.core.di.modules
 
-import com.example.moviecomposeapp.home.data.repository.MovieRepository
-import com.example.moviecomposeapp.home.domain.repository.IMovieRepository
+import com.example.moviecomposeapp.data.repository.MovieRepository
+import com.example.moviecomposeapp.domain.repository.IMovieRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
