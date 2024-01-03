@@ -4,10 +4,10 @@ import com.example.moviecomposeapp.domain.model.Genre
 import javax.inject.Inject
 
 class GetGenreFromIdUseCase @Inject constructor() {
-    fun execute(movieCategories: List<Int>?): List<Genre>? {
+    fun execute(movieCategories: List<Int>?): List<Genre> {
         return movieCategories?.map {
             Genre(it, genreMap.getOrDefault(it, ""))
-        }
+        } ?: listOf()
     }
 
     ///////////////////////////////////////////////////////////////

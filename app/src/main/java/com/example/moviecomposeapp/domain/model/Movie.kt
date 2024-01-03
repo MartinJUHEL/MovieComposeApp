@@ -3,7 +3,7 @@ package com.example.moviecomposeapp.domain.model
 data class Movie(
     val adult: Boolean,
     val backdropPath: String,
-    val genres: List<Genre>?,
+    val genres: List<Genre>,
     val id: Int,
     val originalLanguage: String,
     val originalTitle: String,

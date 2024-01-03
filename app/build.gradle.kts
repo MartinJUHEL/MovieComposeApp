@@ -65,7 +65,11 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     testImplementation("junit:junit:4.13.2")
+    testImplementation ("org.mockito:mockito-core:5.8.0")
+    testImplementation ("org.mockito.kotlin:mockito-kotlin:3.2.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
@@ -93,6 +97,12 @@ dependencies {
     implementation("androidx.hilt:hilt-work:1.1.0")
     implementation("androidx.work:work-runtime-ktx:2.9.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+    // For instrumentation tests
+    androidTestImplementation  ("com.google.dagger:hilt-android-testing:2.50")
+    androidTestAnnotationProcessor ("com.google.dagger:hilt-compiler:2.50")
+    // For local unit tests
+    testImplementation ("com.google.dagger:hilt-android-testing:2.50")
+    testAnnotationProcessor ("com.google.dagger:hilt-compiler:2.50")
 
     //Coil
     implementation("io.coil-kt:coil-compose:2.5.0")
