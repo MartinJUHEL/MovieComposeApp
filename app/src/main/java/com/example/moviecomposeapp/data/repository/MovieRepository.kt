@@ -4,6 +4,8 @@ import com.example.moviecomposeapp.core.api.movie.MovieApi
 import com.example.moviecomposeapp.domain.model.Movie
 import com.example.moviecomposeapp.data.mapper.MovieDtoMapper
 import com.example.moviecomposeapp.data.mapper.MovieResponseDtoMapper
+import com.example.moviecomposeapp.data.mapper.VideoResponseDtoToYoutubeVideoMapper
+import com.example.moviecomposeapp.domain.model.YoutubeVideo
 import com.example.moviecomposeapp.domain.repository.IMovieRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +18,8 @@ import javax.inject.Singleton
 class MovieRepository @Inject constructor(
     private val movieApi: MovieApi,
     private val movieResponseDtoMapper: MovieResponseDtoMapper,
-    private val movieDtoMapper: MovieDtoMapper
+    private val movieDtoMapper: MovieDtoMapper,
+    private val youtubeVideoMapper: VideoResponseDtoToYoutubeVideoMapper
 ) : IMovieRepository {
     override suspend fun fetchPopularMovies(): Flow<List<Movie>> {
         return flow {
@@ -27,6 +30,12 @@ class MovieRepository @Inject constructor(
     override suspend fun fetchMovie(movieId: Int): Flow<Movie> {
         return flow {
             emit(movieDtoMapper.execute(movieApi.fetchMovie(movieId)))
+        }.flowOn(Dispatchers.IO)
+    }
+
+    override suspend fun fetchVideo(movieId: Int): Flow<YoutubeVideo?> {
+        return flow {
+            emit(youtubeVideoMapper.execute(movieApi.fetchVideo(movieId)))
         }.flowOn(Dispatchers.IO)
     }
 
