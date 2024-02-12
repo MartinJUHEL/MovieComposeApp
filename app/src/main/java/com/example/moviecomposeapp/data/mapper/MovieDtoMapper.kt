@@ -12,12 +12,12 @@ class MovieDtoMapper @Inject constructor(
 ) {
 
     fun execute(movieDto: MovieDto): Movie =
-        movieDto.toMovie(getImagePathUseCase.execute(movieDto.poster_path))
+        movieDto.toMovie()
 
-    private fun MovieDto.toMovie(imagePath: String): Movie = Movie(
+    private fun MovieDto.toMovie(): Movie = Movie(
         id = id,
         overview = overview,
-        posterPath = imagePath,
+        posterPath = getImagePathUseCase.execute(poster_path),
         title = title,
         voteAverage = vote_average,
         voteCount = vote_count,

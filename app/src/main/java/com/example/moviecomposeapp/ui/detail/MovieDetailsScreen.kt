@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -43,8 +44,10 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.moviecomposeapp.R
 import com.example.moviecomposeapp.domain.model.Movie
+import com.example.moviecomposeapp.domain.model.YoutubeVideo
 import com.example.moviecomposeapp.domain.usecase.DisplayCategoriesUseCase
 import com.example.moviecomposeapp.ui.component.ErrorView
+import com.example.moviecomposeapp.ui.component.YouTubePlayer
 import com.example.moviecomposeapp.ui.component.shimmerBrush
 
 @Composable
@@ -57,6 +60,7 @@ fun MovieDetailsScreen(navController: NavController) {
         when (movieDetailwViewState) {
             is MovieDetailViewState.Data -> Details(
                 (movieDetailwViewState as MovieDetailViewState.Data).movie,
+                (movieDetailwViewState as MovieDetailViewState.Data).youtubeVideo,
                 navController, viewModel
             )
 
@@ -69,7 +73,12 @@ fun MovieDetailsScreen(navController: NavController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun Details(movie: Movie, navController: NavController, viewModel: MovieDetailsViewModel) {
+private fun Details(
+    movie: Movie,
+    youtubeVideo: YoutubeVideo?,
+    navController: NavController,
+    viewModel: MovieDetailsViewModel
+) {
     val context = LocalContext.current
 
     Scaffold(
@@ -127,7 +136,9 @@ private fun Details(movie: Movie, navController: NavController, viewModel: Movie
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(10.dp)
                     )
-                    HomePageButton(url = movie.homePage, viewModel, context)
+                    WatchTrailer(youtubeVideo?.youtubeId)
+                    Box(modifier = Modifier.height(20.dp))
+                    MovieUrlButton(url = movie.homePage, viewModel, context)
                     Box(modifier = Modifier.height(20.dp))
                 }
             }
@@ -149,7 +160,7 @@ private fun Details(movie: Movie, navController: NavController, viewModel: Movie
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun HomePageButton(url: String?, viewModel: MovieDetailsViewModel, context: Context) {
+private fun MovieUrlButton(url: String?, viewModel: MovieDetailsViewModel, context: Context) {
     if (!url.isNullOrEmpty()) {
         Surface(onClick = {
             viewModel.openHomePage(url, context)
@@ -159,7 +170,7 @@ private fun HomePageButton(url: String?, viewModel: MovieDetailsViewModel, conte
                 Icon(
                     painterResource(id = R.drawable.baseline_language_24),
                     tint = MaterialTheme.colorScheme.primary,
-                    contentDescription = stringResource(id = R.string.back_description),
+                    contentDescription = stringResource(id = R.string.movie_url_button_description),
                 )
 
                 Text(
@@ -170,6 +181,15 @@ private fun HomePageButton(url: String?, viewModel: MovieDetailsViewModel, conte
                 )
             }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun WatchTrailer(youtubeVideoId: String?) {
+    if (!youtubeVideoId.isNullOrEmpty()) {
+        Box(modifier = Modifier.height(20.dp))
+        YouTubePlayer(youtubeVideoId = youtubeVideoId, lifecycleOwner = LocalLifecycleOwner.current)
     }
 }
 
