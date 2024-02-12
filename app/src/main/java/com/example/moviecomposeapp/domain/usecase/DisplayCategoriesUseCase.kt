@@ -4,9 +4,9 @@ import com.example.moviecomposeapp.domain.model.Genre
 import javax.inject.Inject
 
 class DisplayCategoriesUseCase @Inject constructor() {
-    fun execute(movieCategories: List<Genre>?): String {
+    fun execute(movieCategories: List<Genre>): String {
         return buildString {
-            movieCategories?.forEachIndexed { index, genre ->
+            movieCategories.forEachIndexed { index, genre ->
                 if (index == movieCategories.lastIndex) {
                     append(genre.name)
                 } else {
